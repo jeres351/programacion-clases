@@ -4,7 +4,7 @@ USE pyme;
 
 CREATE TABLE direccion (
     id_direccion INT AUTO_INCREMENT,
-    numero_lugar INT         NOT NULL,
+    numero_lugar VARCHAR(30)         NOT NULL,
     calle        VARCHAR(100) NOT NULL,
     comuna       VARCHAR(100) NOT NULL,
     region       VARCHAR(100) NOT NULL,
@@ -35,18 +35,18 @@ CREATE TABLE categoria(
 
     CONSTRAINT pk_categoria 
     PRIMARY KEY (id_categoria)
-) COMMENT = 'Esta tabla sirve para el registro de las Categorias, junto con una descripcion general';
+) COMMENT = 'Esta tabla sirve para el registro de las Categorias de los Productos, junto con una descripcion general';
 
 CREATE TABLE producto (
     gtin                 VARCHAR(14),  
     nombre               VARCHAR(50) NOT NULL,
     descripcion_producto TEXT NULL,
-    precio_compra        DECIMAL(10,2),
-    
+    precio_compra        DECIMAL(10,2)
+    perecible            TINYINT DEFAULT 0    
 
     CONSTRAINT pk_producto 
     PRIMARY KEY (gtin)
-) COMMENT = 'Esta tabla es para registrar los Productos';
+) COMMENT = 'Esta tabla es para registrar los Productos. Si es perecible anadir 1, por defecto en 0 (Si no es perecible)';
 
 CREATE TABLE almacen (
     id_almacen     INT AUTO_INCREMENT,
@@ -60,13 +60,39 @@ CREATE TABLE almacen (
     FOREIGN KEY (id_direccion) REFERENCES direccion(id_direccion)
 ) COMMENT = 'Esta tabla es para registrar los Almacenes';
 
+CREATE TABLE ingresos (
+    id_ingresos   INT AUTO_INCREMENT,
+    gtin_producto VARCHAR(14),
+    fecha_ingreso DATETIME DEFAULT CURRENT_TIMESTAMP ,
+    cantidad      INT NOT NULL 
+    observacion   TEXT
+    rut_proveedor VARCHAR(15)
 
 
+CONSTRAINT pk_ingresos 
+PRIMARY KEY (id_ingresos)
+
+CONSTRAINT fk_ingresos_productos
+FOREIGN KEY (gtin_producto) REFERENCES producto(gtin)
+
+CONSTRAINT fk_ingresos_proveedores
+FOREIGN KEY (rut_proveedor) REFERENCES proveedor(rut)
+);
+
+CREATE TABLE salida (
+    id_salidas     INT AUTO_INCREMENT
+    gtin_producto  VARCHAR(14)
+    cantidad       INT NOT NULL
+    fecha_salida   DATETIME DEFAULT CURRENT_TIMESTAMP
+    motivo         VARCHAR(255)
+
+    CONSTRAINT pk_salidas
+    PRIMARY KEY (id_salidas)
 
 
-
-
-
+    CONSTRAINT fk_salidas_productos
+    FOREIGN KEY (gtin_producto) REFERENCES producto(gtin)
+);
 
 
 
