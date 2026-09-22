@@ -4,7 +4,7 @@ USE pyme;
 
 CREATE TABLE direccion (
     id_direccion INT AUTO_INCREMENT,
-    numero_lugar VARCHAR(30)         NOT NULL,
+    numero_lugar VARCHAR(30)  NOT NULL,
     calle        VARCHAR(100) NOT NULL,
     comuna       VARCHAR(100) NOT NULL,
     region       VARCHAR(100) NOT NULL,
@@ -41,8 +41,8 @@ CREATE TABLE producto (
     gtin                 VARCHAR(14),  
     nombre               VARCHAR(50) NOT NULL,
     descripcion_producto TEXT NULL,
-    precio_compra        DECIMAL(10,2)
-    perecible            TINYINT DEFAULT 0    
+    precio_compra        DECIMAL(10,2),
+    perecible            TINYINT DEFAULT 0,    
 
     CONSTRAINT pk_producto 
     PRIMARY KEY (gtin)
@@ -64,30 +64,30 @@ CREATE TABLE ingresos (
     id_ingresos   INT AUTO_INCREMENT,
     gtin_producto VARCHAR(14),
     fecha_ingreso DATETIME DEFAULT CURRENT_TIMESTAMP ,
-    cantidad      INT NOT NULL 
-    observacion   TEXT
-    rut_proveedor VARCHAR(15)
+    cantidad      INT NOT NULL, 
+    observacion   TEXT,
+    rut_proveedor VARCHAR(15),
 
 
 CONSTRAINT pk_ingresos 
-PRIMARY KEY (id_ingresos)
+PRIMARY KEY (id_ingresos),
 
 CONSTRAINT fk_ingresos_productos
-FOREIGN KEY (gtin_producto) REFERENCES producto(gtin)
+FOREIGN KEY (gtin_producto) REFERENCES producto(gtin),
 
 CONSTRAINT fk_ingresos_proveedores
 FOREIGN KEY (rut_proveedor) REFERENCES proveedor(rut)
 );
 
 CREATE TABLE salida (
-    id_salidas     INT AUTO_INCREMENT
-    gtin_producto  VARCHAR(14)
-    cantidad       INT NOT NULL
-    fecha_salida   DATETIME DEFAULT CURRENT_TIMESTAMP
-    motivo         VARCHAR(255)
+    id_salidas     INT AUTO_INCREMENT,
+    gtin_producto  VARCHAR(14),
+    cantidad       INT NOT NULL,
+    fecha_salida   DATETIME DEFAULT CURRENT_TIMESTAMP,
+    motivo         VARCHAR(255),
 
     CONSTRAINT pk_salidas
-    PRIMARY KEY (id_salidas)
+    PRIMARY KEY (id_salidas),
 
 
     CONSTRAINT fk_salidas_productos
@@ -142,3 +142,4 @@ CREATE TABLE producto_almacen(
     CONSTRAINT fk_pa_almacen
     FOREIGN KEY (id_almacen) REFERENCES almacen(id_almacen)
 ) COMMENT = 'Esta tabla es para poder saber cuantos productos esta en cada almacen';
+
