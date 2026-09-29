@@ -1,11 +1,7 @@
 from peewee import *
-from decouple import config
 
-database = MySQLDatabase(config('db'), **{'charset': 'utf8mb4', 
-'host': config('host'), 
-'port': config('port'), 
-'user': config('user'), 
-'password': config('password')})
+
+database = MySQLDatabase('pyme', **{'charset': 'utf8mb4', 'host': 'localhost', 'port': 3306, 'user': 'jere', 'password': '1324'})
 
 class UnknownField(object):
     def __init__(self, *_, **__): pass

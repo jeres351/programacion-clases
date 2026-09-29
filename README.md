@@ -1,1 +1,1 @@
-cree el orm y otras cosas 
+eli teaaaaa.txt
