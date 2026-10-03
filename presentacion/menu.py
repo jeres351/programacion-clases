@@ -1,4 +1,4 @@
 def menu_principal():
-    print("esta es una prueba xDDD lol Placeholder")
+    print("windows 10 > windows 11")
 
 menu_principal()
