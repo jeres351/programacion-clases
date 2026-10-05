@@ -1,6 +1,8 @@
-CREATE DATABASE pyme;
+create database pyme;
 
-USE pyme;
+use pyme;
+
+
 
 CREATE TABLE direccion (
     id_direccion INT AUTO_INCREMENT,
@@ -63,6 +65,7 @@ CREATE TABLE almacen (
 CREATE TABLE ingresos (
     id_ingresos   INT AUTO_INCREMENT,
     gtin_producto VARCHAR(14),
+    id_almacen    INT NOT NULL,
     fecha_ingreso DATETIME DEFAULT CURRENT_TIMESTAMP ,
     cantidad      INT NOT NULL, 
     observacion   TEXT,
@@ -76,12 +79,16 @@ CONSTRAINT fk_ingresos_productos
 FOREIGN KEY (gtin_producto) REFERENCES producto(gtin),
 
 CONSTRAINT fk_ingresos_proveedores
-FOREIGN KEY (rut_proveedor) REFERENCES proveedor(rut)
+FOREIGN KEY (rut_proveedor) REFERENCES proveedor(rut),
+
+CONSTRAINT fk_ingresos_almacen
+FOREIGN KEY (id_almacen) REFERENCES almacen(id_almacen)
 );
 
 CREATE TABLE salida (
     id_salidas     INT AUTO_INCREMENT,
     gtin_producto  VARCHAR(14),
+    id_almacen     INT NOT NULL,
     cantidad       INT NOT NULL,
     fecha_salida   DATETIME DEFAULT CURRENT_TIMESTAMP,
     motivo         VARCHAR(255),
@@ -91,7 +98,10 @@ CREATE TABLE salida (
 
 
     CONSTRAINT fk_salidas_productos
-    FOREIGN KEY (gtin_producto) REFERENCES producto(gtin)
+    FOREIGN KEY (gtin_producto) REFERENCES producto(gtin),
+
+    CONSTRAINT fk_salidas_almacen
+    FOREIGN KEY (id_almacen) REFERENCES almacen(id_almacen)
 );
 
 
@@ -142,4 +152,3 @@ CREATE TABLE producto_almacen(
     CONSTRAINT fk_pa_almacen
     FOREIGN KEY (id_almacen) REFERENCES almacen(id_almacen)
 ) COMMENT = 'Esta tabla es para poder saber cuantos productos esta en cada almacen';
-
