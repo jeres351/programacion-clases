@@ -1,4 +1,5 @@
-from peewee import *
+from peewee import Model, CharField, TextField, IntegerField, DecimalField, SQL, AutoField, CompositeKey, DateTimeField
+from datos.modelos.models import Producto
 from datos.conexion import crear_conexion
 
 
