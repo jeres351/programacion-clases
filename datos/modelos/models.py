@@ -1,6 +1,6 @@
-from peewee import CharField, DateField, DateTimeField, DecimalField, ForeignKeyField, IntegerField, Model, MySQLDatabase, SQL, TextField, AutoField, CompositeKey
-
+from peewee import Model, TextField, DateField, CharField, DecimalField, AutoField, ForeignKeyField, IntegerField, DateTimeField, CompositeKey, SQL
 from datos.conexion import crear_conexion
+
 
 
 class BaseModel(Model):
@@ -28,7 +28,7 @@ class Almacen(BaseModel):
 class Categoria(BaseModel):
     descripcion_categoria = TextField(null=True)
     id_categoria = AutoField()
-    nombre = CharField(max_length=35)
+    nombre_categoria = CharField(max_length=35)
 
     class Meta:
         table_name = 'categoria'
@@ -37,7 +37,7 @@ class Producto(BaseModel):
     descripcion_producto = TextField(null=True)
     fecha_vencimiento = DateField(null=True)
     gtin = CharField(max_length=14, primary_key=True)
-    nombre = CharField(max_length=50)
+    nombre_producto = CharField(max_length=50)
     perecible = CharField(max_length=2)
     precio_compra = DecimalField(decimal_places=2, max_digits=10)
 
@@ -56,22 +56,22 @@ class CategoriaProducto(BaseModel):
         primary_key = CompositeKey('id_categoria', 'gtin_producto')
 
 class Proveedor(BaseModel):
-    correo = CharField(max_length=50, null=True)
+    correo_proveedor = CharField(max_length=50, null=True)
     id_direccion = ForeignKeyField(column_name='id_direccion', field='id_direccion', model=Direccion, on_update='CASCADE')
-    nombre = CharField(max_length=30)
+    nombre_proveedor = CharField(max_length=30)
     rut = CharField(max_length=15, primary_key=True)
-    telefono = CharField(max_length=15, null=True)
+    telefono_proveedor = CharField(max_length=15, null=True)
 
     class Meta:
         table_name = 'proveedor'
 
 class Ingresos(BaseModel):
-    cantidad = IntegerField()
+    cantidad_ingreso = IntegerField()
     fecha_ingreso = DateTimeField(constraints=[SQL("DEFAULT CURRENT_TIMESTAMP")], index=True)
     gtin_producto = ForeignKeyField(column_name='gtin_producto', field='gtin', model=Producto, on_update='CASCADE')
     id_almacen = ForeignKeyField(column_name='id_almacen', field='id_almacen', model=Almacen, on_update='CASCADE')
     id_ingresos = AutoField()
-    observacion = TextField(null=True)
+    observacion_ingreso = TextField(null=True)
     rut_proveedor = ForeignKeyField(column_name='rut_proveedor', field='rut', model=Proveedor, on_update='CASCADE')
 
     class Meta:
@@ -101,12 +101,12 @@ class ProveedorProducto(BaseModel):
         primary_key = CompositeKey('rut_proveedor', 'gtin_producto')
 
 class Salida(BaseModel):
-    cantidad = IntegerField()
+    cantidad_salida = IntegerField()
     fecha_salida = DateTimeField(constraints=[SQL("DEFAULT CURRENT_TIMESTAMP")], index=True)
     gtin_producto = ForeignKeyField(column_name='gtin_producto', field='gtin', model=Producto, on_update='CASCADE')
     id_almacen = ForeignKeyField(column_name='id_almacen', field='id_almacen', model=Almacen, on_update='CASCADE')
     id_salidas = AutoField()
-    motivo = CharField(null=True)
+    motivo_salida = CharField(null=True)
 
     class Meta:
         table_name = 'salida'
