@@ -1,4 +1,5 @@
 from peewee import Model, TextField, DateField, CharField, DecimalField
+from datos.modelos.models import Producto
 from datos.conexion import crear_conexion
 database = crear_conexion()
 

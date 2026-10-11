@@ -1,4 +1,4 @@
-from negocio.negocio_producto import crear_objeto_producto
+from negocio.negocio_producto import crear_objeto_producto, borrar_producto
 
 def solicitar_datos_producto():
     gtin = input("Ingrese el GTIN del producto: ")
@@ -9,3 +9,7 @@ def solicitar_datos_producto():
     fecha_vencimiento = input("Fecha de vencimiento (YYYY-MM-DD, vacío si no aplica): ") or None    
 
     crear_objeto_producto(gtin, nombre_producto, descripcion_producto, precio_compra, perecible, fecha_vencimiento)
+    
+def solicitar_gtin_eliminar():
+    gtin = input("Ingrese el GTIN del producto a eliminar: ")
+    borrar_producto(gtin)

@@ -1,4 +1,4 @@
-from datos.repositorio.repo_producto import listado_producto, guardar_producto
+from datos.repositorio.repo_producto import listado_producto, guardar_producto, eliminar_producto
 from datos.modelos.models import Producto, Proveedor, ProveedorProducto
 from prettytable import PrettyTable
 def lista_producto():
@@ -33,3 +33,6 @@ def crear_objeto_producto(gtin, nombre_producto, descripcion_producto, precio_co
     nuevo_producto.perecible = perecible
     nuevo_producto.fecha_vencimiento = fecha_vencimiento
     guardar_producto(nuevo_producto)
+    
+def borrar_producto(gtin):
+    return eliminar_producto(gtin)
