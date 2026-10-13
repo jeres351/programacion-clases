@@ -1,12 +1,5 @@
-from peewee import Model, TextField, DateField, CharField, DecimalField
-from datos.modelos.models import Producto
-from datos.conexion import crear_conexion
-database = crear_conexion()
-
-class BaseModel(Model):
-    class Meta:
-        database = crear_conexion()
-        
+from peewee import TextField, DateField, CharField, DecimalField
+from datos.modelos.base_model import BaseModel
 
 class Producto(BaseModel):
     descripcion_producto = TextField(null=True)

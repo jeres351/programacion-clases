@@ -1,12 +1,7 @@
-from peewee import Model, ForeignKeyField, CompositeKey
-from datos.modelos.models import Producto, Categoria
-from datos.conexion import crear_conexion
-database = crear_conexion()
-
-class BaseModel(Model):
-    class Meta:
-        database = crear_conexion()
-
+from peewee import ForeignKeyField, CompositeKey
+from datos.modelos.base_model import BaseModel
+from datos.modelos.producto import Producto
+from datos.modelos.categoria import Categoria
 
 class CategoriaProducto(BaseModel):
     gtin_producto = ForeignKeyField(column_name='gtin_producto', field='gtin', model=Producto, on_delete='CASCADE', on_update='CASCADE')
