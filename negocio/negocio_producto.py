@@ -1,5 +1,8 @@
-from datos.repositorio.repo_producto import (listado_producto, stock_total_por_producto,
-                                             buscar_producto, guardar_producto, eliminar_producto)
+from datos.repositorio.repo_producto import (listado_producto,
+                                              stock_total_por_producto,
+                                              buscar_producto, 
+                                              guardar_producto, 
+                                              eliminar_producto)
 from datos.repositorio.categoria_producto import asignar_categoria
 from datos.repositorio.repo_proveedor import asignar_proveedor
 from datos.modelos.models import Producto

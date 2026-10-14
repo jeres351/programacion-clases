@@ -1,3 +1,5 @@
 .venv/
 .vscode/
-echo ".venv/" >> .gitignore
+__pycache__/
+.env
+*.db
