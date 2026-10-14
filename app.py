@@ -1,6 +1,12 @@
 from presentacion.menu import menu_principal
-from negocio.negocio_producto import lista_producto
-from presentacion.presentacion_producto import solicitar_datos_producto
+from datos.modelos.models import BaseModel
 
-solicitar_datos_producto()
-lista_producto()
+if __name__ == '__main__':
+    try:
+        menu_principal()
+    except (KeyboardInterrupt, EOFError):
+        print('\nSaliendo...')
+    finally:
+        db = BaseModel._meta.database
+        if not db.is_closed():
+            db.close()
