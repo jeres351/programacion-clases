@@ -11,3 +11,4 @@ from datos.modelos.ingresos import Ingresos
 from datos.modelos.producto_almacen import ProductoAlmacen
 from datos.modelos.proveedor_producto import ProveedorProducto
 from datos.modelos.salida import Salida
+from datos.modelos.usuarios import Usuarios

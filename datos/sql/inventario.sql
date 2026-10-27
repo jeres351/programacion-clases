@@ -5,7 +5,20 @@ USE pyme;
 CREATE TABLE direccion (
     id_direccion INT AUTO_INCREMENT,
     numero_lugar VARCHAR(30)  NOT NULL,
-    calle        VARCHAR(100) NOT NULL,
+    calle        VARCHducto
+    PRIMARY KEY (gtin),
+
+    CONSTRAINT ck_producto_precio
+    CHECK (precio_compra >= 0),
+
+    CONSTRAINT ck_producto_perecible
+    CHECK (perecible IN ('SI', 'NO')),
+
+    CONSTRAINT ck_producto_vencimiento
+    CHECK (perecible = 'NO' OR fecha_vencimiento IS NOT NULL)
+) COMMENT = 'Esta tabla es para registrar los Productos';
+
+CREATE TABLE almacenAR(100) NOT NULL,
     comuna       VARCHAR(100) NOT NULL,
     region       VARCHAR(100) NOT NULL,
 
@@ -177,3 +190,11 @@ CREATE TABLE producto_almacen (
     FOREIGN KEY (id_almacen) REFERENCES almacen(id_almacen)
     ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT = 'Esta tabla es para poder saber cuantos productos esta en cada almacen';
+
+
+create table usuarios
+(
+    correo_usuario VARCHAR(100) NOT NULL,
+    contrasena_usuario VARCHAR(60) NOT NULL,
+    CONSTRAINT pk_usuario PRIMARY KEY (correo_usuario)
+) COMMENT = 'Esta tabla es para registrar los usuarios del sistema, con su nombre, correo, contraseña...';, contraseña y rol';
