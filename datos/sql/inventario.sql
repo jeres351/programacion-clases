@@ -192,9 +192,8 @@ CREATE TABLE producto_almacen (
 ) COMMENT = 'Esta tabla es para poder saber cuantos productos esta en cada almacen';
 
 
-create table usuarios
-(
-    correo_usuario VARCHAR(100) NOT NULL,
-    contrasena_usuario VARCHAR(60) NOT NULL,
-    CONSTRAINT pk_usuario PRIMARY KEY (correo_usuario)
-) COMMENT = 'Esta tabla es para registrar los usuarios del sistema, con su nombre, correo, contraseña...';, contraseña y rol';
+CREATE TABLE usuarios (
+    correo_usuario VARCHAR(255) PRIMARY KEY,
+    contrasena_usuario VARCHAR(255) NOT NULL,
+    habilitado BOOLEAN DEFAULT TRUE
+);
