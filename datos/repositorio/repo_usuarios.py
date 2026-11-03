@@ -5,7 +5,7 @@ def listado_usuarios():
     return Usuarios.select().order_by(Usuarios.correo_usuario)
  
 def buscar_usuario(correo):
-    return Usuarios.get_or_none(Usuarios.correo_usuario == correo)
+    return Usuarios.get_or_none(Usuarios.id_usuario == correo)
  
 def guardar_usuario(usuario):
     try:
