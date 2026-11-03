@@ -193,7 +193,11 @@ CREATE TABLE producto_almacen (
 
 
 CREATE TABLE usuarios (
-    correo_usuario VARCHAR(255) PRIMARY KEY,
-    contrasena_usuario VARCHAR(255) NOT NULL,
-    habilitado BOOLEAN DEFAULT TRUE
+    correo_usuario     VARCHAR(255)  PRIMARY KEY,
+    contrasena_usuario VARCHAR(255)  NOT NULL,
+    habilitado         BOOLEAN       DEFAULT TRUE
+
+
+    CONSTRAINT pk_usuarios
+    PRIMARY KEY (correo_usuario)
 );
