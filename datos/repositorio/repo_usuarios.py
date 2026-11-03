@@ -2,10 +2,10 @@ from datos.modelos.models import Usuarios
 from peewee import IntegrityError, OperationalError, PeeweeException
  
 def listado_usuarios():
-    return Usuarios.select().order_by(Usuarios.correo_usuario)
+    return Usuarios.select().order_by(Usuarios.id_usuario)
  
 def buscar_usuario(correo):
-    return Usuarios.get_or_none(Usuarios.id_usuario == correo)
+    return Usuarios.get_or_none(Usuarios.id_usuario == id_usuario)
  
 def guardar_usuario(usuario):
     try:
