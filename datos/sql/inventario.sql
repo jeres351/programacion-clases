@@ -193,8 +193,8 @@ CREATE TABLE producto_almacen (
 
 
 CREATE TABLE usuarios (
-    id_usuario         INTEGER       AUTO_INCREMENT
-    correo_usuario     VARCHAR(255)  PRIMARY KEY,
+    id_usuario         INTEGER AUTO_INCREMENT,
+    correo_usuario     VARCHAR(255),
     contrasena_usuario VARCHAR(255)  NOT NULL,
     habilitado         BOOLEAN       DEFAULT TRUE
 
