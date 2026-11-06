@@ -1,8 +1,6 @@
-from datos.modelos.models import (BaseModel, Producto, Proveedor, Almacen, Direccion,
-                                  Ingresos, Salida, ProductoAlmacen)
+from datos.modelos.models import BaseModel, Producto, Proveedor, Almacen, Direccion, Ingresos, Salida, ProductoAlmacen
 from peewee import IntegrityError, OperationalError, PeeweeException
 
-db = BaseModel._meta.database
 
 
 class StockInsuficiente(Exception):

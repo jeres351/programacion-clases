@@ -57,3 +57,11 @@ def eliminar_producto(gtin):
         print(f"Se ha perdido la conexión con el servidor DB: {e}")
     except PeeweeException as e:
         print(f"Ha ocurrido un error genérico: {e}")
+
+
+
+def productos_por_categoria(id_categoria):
+    return (Producto
+            .select()
+            .join(CategoriaProducto)
+            .where(CategoriaProducto.id_categoria == id_categoria))

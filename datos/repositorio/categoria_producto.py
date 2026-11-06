@@ -7,12 +7,6 @@ def listado_categorias():
 def buscar_categoria_por_id(id_categoria):
     return Categoria.get_or_none(Categoria.id_categoria == id_categoria)
 
-def productos_por_categoria(id_categoria):
-    return (Producto
-            .select()
-            .join(CategoriaProducto)
-            .where(CategoriaProducto.id_categoria == id_categoria))
-
 def asignar_categoria(gtin, id_categoria):
     try:
         CategoriaProducto.create(gtin_producto=gtin, id_categoria=id_categoria)
