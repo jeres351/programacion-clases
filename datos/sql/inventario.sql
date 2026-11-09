@@ -5,20 +5,7 @@ USE pyme;
 CREATE TABLE direccion (
     id_direccion INT AUTO_INCREMENT,
     numero_lugar VARCHAR(30)  NOT NULL,
-    calle        VARCHducto
-    PRIMARY KEY (gtin),
-
-    CONSTRAINT ck_producto_precio
-    CHECK (precio_compra >= 0),
-
-    CONSTRAINT ck_producto_perecible
-    CHECK (perecible IN ('SI', 'NO')),
-
-    CONSTRAINT ck_producto_vencimiento
-    CHECK (perecible = 'NO' OR fecha_vencimiento IS NOT NULL)
-) COMMENT = 'Esta tabla es para registrar los Productos';
-
-CREATE TABLE almacenAR(100) NOT NULL,
+    calle        VARCHAR(100) NOT NULL,
     comuna       VARCHAR(100) NOT NULL,
     region       VARCHAR(100) NOT NULL,
 
@@ -191,13 +178,11 @@ CREATE TABLE producto_almacen (
     ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT = 'Esta tabla es para poder saber cuantos productos esta en cada almacen';
 
-
 CREATE TABLE usuarios (
-    id_usuario         INTEGER AUTO_INCREMENT,
+    id_usuario         INT AUTO_INCREMENT,
     correo_usuario     VARCHAR(255),
-    contrasena_usuario VARCHAR(255)  NOT NULL,
-    habilitado         BOOLEAN       DEFAULT TRUE
-
+    contrasena_usuario VARCHAR(255) NOT NULL,
+    habilitado         BOOLEAN DEFAULT TRUE,
 
     CONSTRAINT pk_usuarios
     PRIMARY KEY (id_usuario)

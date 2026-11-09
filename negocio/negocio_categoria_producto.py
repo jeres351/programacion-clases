@@ -1,5 +1,5 @@
-from datos.repositorio.categoria_producto import (listado_categorias, buscar_categoria_por_id,
-                                                  productos_por_categoria)
+from datos.repositorio.categoria_producto import listado_categorias, buscar_categoria_por_id
+from datos.repositorio.repo_producto import productos_por_categoria
 from prettytable import PrettyTable
 
 def mostrar_categorias():
