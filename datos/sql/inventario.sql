@@ -186,4 +186,4 @@ CREATE TABLE usuarios (
 
     CONSTRAINT pk_usuarios
     PRIMARY KEY (id_usuario)
-);
+) COMMENT = 'Esta tabla es para poder registrar los usuarios que puedan acceder al sistema, Habilitado es para poder hacer un borrado logico'
