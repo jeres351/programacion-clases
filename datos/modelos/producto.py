@@ -1,7 +1,8 @@
 from peewee import TextField, DateField, CharField, DecimalField
-from datos.modelos.base_model import BaseModel
+from datos.modelos.base_model import ModeloBorradoLogico
 
-class Producto(BaseModel):
+
+class Producto(ModeloBorradoLogico):
     descripcion_producto = TextField(null=True)
     fecha_vencimiento = DateField(null=True)
     gtin = CharField(max_length=14, primary_key=True)

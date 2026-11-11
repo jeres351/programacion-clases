@@ -19,6 +19,8 @@ CREATE TABLE proveedor (
     correo_proveedor   VARCHAR(50),
     id_direccion       INT NOT NULL,
     telefono_proveedor VARCHAR(15),
+    activo             BOOLEAN NOT NULL DEFAULT TRUE,
+    fecha_eliminacion  DATETIME NULL,
 
     CONSTRAINT pk_proveedor
     PRIMARY KEY (rut),
@@ -44,6 +46,8 @@ CREATE TABLE producto (
     precio_compra        DECIMAL(10,2) NOT NULL,
     perecible            VARCHAR(2)    NOT NULL,
     fecha_vencimiento    DATE NULL,
+    activo               BOOLEAN NOT NULL DEFAULT TRUE,
+    fecha_eliminacion    DATETIME NULL,
 
     CONSTRAINT pk_producto
     PRIMARY KEY (gtin),

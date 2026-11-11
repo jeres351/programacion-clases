@@ -1,4 +1,5 @@
-from datos.modelos.models import (BaseModel, Proveedor, Direccion, Almacen, ProveedorProducto)
+from datetime import datetime
+from datos.modelos.models import (BaseModel, Proveedor, Direccion, ProveedorProducto)
 from peewee import IntegrityError, OperationalError, PeeweeException
 
 db = BaseModel._meta.database
@@ -8,10 +9,15 @@ def listado_proveedores():
     return (Proveedor
             .select(Proveedor, Direccion)
             .join(Direccion)
+            .where(Proveedor.activo == True)
             .order_by(Proveedor.nombre_proveedor))
 
 def buscar_proveedor(rut):
-    return Proveedor.get_or_none(Proveedor.rut == rut)
+    """Solo proveedores activos."""
+    return Proveedor.get_or_none((Proveedor.rut == rut) & (Proveedor.activo == True))
+
+def buscar_proveedor_eliminado(rut):
+    return Proveedor.get_or_none((Proveedor.rut == rut) & (Proveedor.activo == False))
 
 def guardar_proveedor(proveedor, direccion):
     """Guarda la dirección y el proveedor juntos (si falla uno, no se guarda ninguno)."""
@@ -45,23 +51,29 @@ def asignar_proveedor(gtin, rut):
 
 def eliminar_proveedor(rut):
     try:
-        with db.atomic():
-            proveedor = Proveedor.get_or_none(Proveedor.rut == rut)
-            if proveedor is None:
-                print("No existe un proveedor con ese RUT.")
-                return 0
-            id_direccion = proveedor.id_direccion_id
-            filas = Proveedor.delete().where(Proveedor.rut == rut).execute()
-
-            # La dirección se borra solo si ya nadie más la usa
-            en_uso = (Proveedor.select().where(Proveedor.id_direccion == id_direccion).exists() or
-                      Almacen.select().where(Almacen.id_direccion == id_direccion).exists())
-            if not en_uso:
-                Direccion.delete().where(Direccion.id_direccion == id_direccion).execute()
-        print("Proveedor eliminado correctamente.")
+        filas = (Proveedor
+                 .update(activo=False, fecha_eliminacion=datetime.now())
+                 .where((Proveedor.rut == rut) & (Proveedor.activo == True))
+                 .execute())
+        if filas == 1:
+            print("Proveedor eliminado correctamente.")
+        else:
+            print("No existe un proveedor activo con ese RUT.")
         return filas
-    except IntegrityError as e:
-        print(f"No se puede eliminar, el proveedor tiene ingresos registrados: {e}")
+    except OperationalError as e:
+        print(f"Se ha perdido la conexión con el servidor DB: {e}")
+    except PeeweeException as e:
+        print(f"Ha ocurrido un error genérico: {e}")
+
+def restaurar_proveedor(rut):
+    try:
+        filas = (Proveedor
+                 .update(activo=True, fecha_eliminacion=None)
+                 .where((Proveedor.rut == rut) & (Proveedor.activo == False))
+                 .execute())
+        if filas == 1:
+            print("Proveedor reactivado correctamente.")
+        return filas
     except OperationalError as e:
         print(f"Se ha perdido la conexión con el servidor DB: {e}")
     except PeeweeException as e:

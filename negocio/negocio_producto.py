@@ -1,8 +1,10 @@
 from datos.repositorio.repo_producto import (listado_producto,
                                               stock_total_por_producto,
-                                              buscar_producto, 
-                                              guardar_producto, 
-                                              eliminar_producto)
+                                              buscar_producto,
+                                              buscar_producto_eliminado,
+                                              guardar_producto,
+                                              eliminar_producto,
+                                              restaurar_producto)
 from datos.repositorio.categoria_producto import asignar_categoria
 from datos.repositorio.repo_proveedor import asignar_proveedor
 from datos.modelos.models import Producto
@@ -39,6 +41,12 @@ def existe_producto(gtin):
 
 def obtener_producto(gtin):
     return buscar_producto(gtin)
+
+def existe_producto_eliminado(gtin):
+    return buscar_producto_eliminado(gtin) is not None
+
+def reactivar_producto(gtin):
+    return restaurar_producto(gtin)
 
 def crear_objeto_producto(gtin, nombre_producto, descripcion_producto, precio_compra, perecible,
                           fecha_vencimiento, id_categoria=None, rut_proveedor=None):

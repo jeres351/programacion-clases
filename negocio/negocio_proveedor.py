@@ -1,4 +1,6 @@
-from datos.repositorio.repo_proveedor import (listado_proveedores, buscar_proveedor,guardar_proveedor, eliminar_proveedor)
+from datos.repositorio.repo_proveedor import (listado_proveedores, buscar_proveedor,
+                                              buscar_proveedor_eliminado, guardar_proveedor,
+                                              eliminar_proveedor, restaurar_proveedor)
 from datos.modelos.models import Proveedor, Direccion
 from prettytable import PrettyTable
 
@@ -26,6 +28,12 @@ def existe_proveedor(rut):
 
 def obtener_proveedor(rut):
     return buscar_proveedor(rut)
+
+def existe_proveedor_eliminado(rut):
+    return buscar_proveedor_eliminado(rut) is not None
+
+def reactivar_proveedor(rut):
+    return restaurar_proveedor(rut)
 
 def crear_objeto_proveedor(rut, nombre_proveedor, correo_proveedor, telefono_proveedor,
                            calle, numero_lugar, comuna, region):

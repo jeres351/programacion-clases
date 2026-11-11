@@ -1,4 +1,5 @@
-from negocio.negocio_producto import crear_objeto_producto, borrar_producto, obtener_producto, lista_producto
+from negocio.negocio_producto import (crear_objeto_producto, borrar_producto, obtener_producto,
+                                      lista_producto, existe_producto_eliminado, reactivar_producto)
 from negocio.negocio_categoria_producto import mostrar_categorias, existe_categoria
 from negocio.negocio_proveedor import mostrar_proveedores, existe_proveedor
 from auxiliares.entradas import (pedir_texto, pedir_gtin, pedir_decimal, pedir_fecha,pedir_si_no, pedir_entero_opcional)
@@ -8,6 +9,13 @@ def solicitar_datos_producto():
     gtin = pedir_gtin("Ingrese el GTIN del producto: ")
     if obtener_producto(gtin):
         print("Ya existe un producto con ese GTIN.")
+        return
+
+    if existe_producto_eliminado(gtin):
+        if pedir_si_no("Hay un producto eliminado con ese GTIN. ¿Quieres reactivarlo?"):
+            reactivar_producto(gtin)
+        else:
+            print("Operación cancelada.")
         return
 
     nombre_producto = pedir_texto("Ingrese el nombre del producto: ", 50)

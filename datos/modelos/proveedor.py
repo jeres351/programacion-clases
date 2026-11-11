@@ -1,8 +1,8 @@
 from peewee import CharField, ForeignKeyField
-from datos.modelos.base_model import BaseModel
+from datos.modelos.base_model import ModeloBorradoLogico
 from datos.modelos.direccion import Direccion
 
-class Proveedor(BaseModel):
+class Proveedor(ModeloBorradoLogico):
     correo_proveedor = CharField(max_length=50, null=True)
     id_direccion = ForeignKeyField(column_name='id_direccion', field='id_direccion', model=Direccion, on_update='CASCADE')
     nombre_proveedor = CharField(max_length=30)

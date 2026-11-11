@@ -1,8 +1,10 @@
-from datos.modelos.models import Producto, Proveedor, ProveedorProducto, ProductoAlmacen
+from datetime import datetime
+from datos.modelos.models import (Producto, Proveedor, ProveedorProducto,
+                                  ProductoAlmacen, CategoriaProducto)
 from peewee import JOIN, fn, IntegrityError, OperationalError, PeeweeException
 
 def listado_producto():
-    """Todos los productos con su proveedor (None si no tiene). Devuelve tuplas."""
+    """Productos activos con su proveedor activo (None si no tiene). Devuelve tuplas."""
     return (Producto
             .select(Producto.gtin,
                     Producto.nombre_producto,
@@ -14,7 +16,9 @@ def listado_producto():
             .join(ProveedorProducto, JOIN.LEFT_OUTER,
                   on=(Producto.gtin == ProveedorProducto.gtin_producto))
             .join(Proveedor, JOIN.LEFT_OUTER,
-                  on=(ProveedorProducto.rut_proveedor == Proveedor.rut))
+                  on=((ProveedorProducto.rut_proveedor == Proveedor.rut) &
+                      (Proveedor.activo == True)))
+            .where(Producto.activo == True)
             .order_by(Producto.nombre_producto)
             .tuples())
 
@@ -27,7 +31,11 @@ def stock_total_por_producto():
     return {gtin: int(total) for gtin, total in query}
 
 def buscar_producto(gtin):
-    return Producto.get_or_none(Producto.gtin == gtin)
+    """Solo productos activos."""
+    return Producto.get_or_none((Producto.gtin == gtin) & (Producto.activo == True))
+
+def buscar_producto_eliminado(gtin):
+    return Producto.get_or_none((Producto.gtin == gtin) & (Producto.activo == False))
 
 def guardar_producto(producto):
     try:
@@ -45,23 +53,38 @@ def guardar_producto(producto):
 
 def eliminar_producto(gtin):
     try:
-        filas = Producto.delete().where(Producto.gtin == gtin).execute()
+        filas = (Producto
+                 .update(activo=False, fecha_eliminacion=datetime.now())
+                 .where((Producto.gtin == gtin) & (Producto.activo == True))
+                 .execute())
         if filas == 1:
             print("Producto eliminado correctamente.")
         else:
-            print("No existe un producto con ese GTIN.")
+            print("No existe un producto activo con ese GTIN.")
         return filas
-    except IntegrityError as e:
-        print(f"No se puede eliminar, el producto está referenciado en otra tabla: {e}")
+    except OperationalError as e:
+        print(f"Se ha perdido la conexión con el servidor DB: {e}")
+    except PeeweeException as e:
+        print(f"Ha ocurrido un error genérico: {e}")
+
+def restaurar_producto(gtin):
+    try:
+        filas = (Producto
+                 .update(activo=True, fecha_eliminacion=None)
+                 .where((Producto.gtin == gtin) & (Producto.activo == False))
+                 .execute())
+        if filas == 1:
+            print("Producto reactivado correctamente.")
+        return filas
     except OperationalError as e:
         print(f"Se ha perdido la conexión con el servidor DB: {e}")
     except PeeweeException as e:
         print(f"Ha ocurrido un error genérico: {e}")
 
 
-
 def productos_por_categoria(id_categoria):
     return (Producto
             .select()
             .join(CategoriaProducto)
-            .where(CategoriaProducto.id_categoria == id_categoria))
+            .where((CategoriaProducto.id_categoria == id_categoria) &
+                   (Producto.activo == True)))

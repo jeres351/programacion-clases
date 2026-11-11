@@ -1,5 +1,6 @@
 from negocio.negocio_proveedor import (mostrar_proveedores, crear_objeto_proveedor,
-                                       borrar_proveedor, obtener_proveedor)
+                                       borrar_proveedor, obtener_proveedor,
+                                       existe_proveedor_eliminado, reactivar_proveedor)
 from auxiliares.entradas import pedir_texto, pedir_si_no
 
 def ver_proveedores():
@@ -11,6 +12,13 @@ def solicitar_datos_proveedor():
     rut = pedir_texto("RUT del proveedor (ej: 76.123.456-7): ", 15)
     if obtener_proveedor(rut):
         print("Ya existe un proveedor con ese RUT.")
+        return
+
+    if existe_proveedor_eliminado(rut):
+        if pedir_si_no("Hay un proveedor eliminado con ese RUT. ¿Quieres reactivarlo?"):
+            reactivar_proveedor(rut)
+        else:
+            print("Operación cancelada.")
         return
 
     nombre_proveedor = pedir_texto("Nombre del proveedor: ", 30)
