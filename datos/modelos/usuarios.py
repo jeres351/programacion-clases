@@ -1,11 +1,16 @@
-from peewee import CharField, BooleanField, IntegerField
+from datetime import datetime
+from peewee import AutoField, CharField, BooleanField, DateTimeField
 from datos.modelos.base_model import BaseModel
 
+
 class Usuarios(BaseModel):
-    id_usuario = IntegerField(column_name='id_usuario', unique=True, null=False)
-    correo_usuario = CharField(column_name='correo_usuario', max_length=100, primary_key=True)
-    contrasena_usuario = CharField(column_name='contrasena_usuario', max_length=60)
-    habilitado = BooleanField(default=True,null=False)
+    id_usuario = AutoField()
+    nombre_usuario = CharField(max_length=25)
+    apellido_usuario = CharField(max_length=25)
+    correo_usuario = CharField(max_length=255, unique=True)
+    contrasena_usuario = CharField(max_length=72)
+    fecha_incorporacion = DateTimeField(default=datetime.now)
+    habilitado = BooleanField(default=True)
 
     class Meta:
         table_name = 'usuarios'

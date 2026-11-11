@@ -2,10 +2,11 @@ from datos.repositorio.repo_producto import (listado_producto,
                                               stock_total_por_producto,
                                               buscar_producto,
                                               buscar_producto_eliminado,
+                                              buscar_producto_cualquiera,
                                               guardar_producto,
                                               eliminar_producto,
-                                              restaurar_producto)
-from datos.repositorio.categoria_producto import asignar_categoria
+                                              restaurar_producto,
+                                              actualizar_producto)
 from datos.repositorio.repo_proveedor import asignar_proveedor
 from datos.modelos.models import Producto
 from prettytable import PrettyTable
@@ -65,3 +66,15 @@ def crear_objeto_producto(gtin, nombre_producto, descripcion_producto, precio_co
 
 def borrar_producto(gtin):
     return eliminar_producto(gtin)
+
+def existe_producto_historial(gtin):
+    return buscar_producto_cualquiera(gtin) is not None
+
+def modificar_producto(gtin, precio_compra, fecha_vencimiento):
+    return actualizar_producto(gtin, precio_compra, fecha_vencimiento)
+
+def existe_producto_historial(gtin):
+    return buscar_producto_cualquiera(gtin) is not None
+
+def modificar_producto(gtin, precio_compra, fecha_vencimiento):
+    return actualizar_producto(gtin, precio_compra, fecha_vencimiento)

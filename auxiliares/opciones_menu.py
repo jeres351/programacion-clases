@@ -3,6 +3,7 @@ menu_superior = {
     '2':'Operaciones',
     '3':'Productos',
     '4':'Proveedores',
+    '5':'Usuarios',
     '0':'Salir'
 }
 
@@ -32,4 +33,10 @@ menu_proveedores = {
     '3':'Eliminar',
     '0':'Volver'
 }
-
+menu_usuarios = {
+    '1':'Ver habilitados',
+    '2':'Ver deshabilitados',
+    '3':'Agregar',
+    '4':'Deshabilitar',
+    '0':'Volver'
+}

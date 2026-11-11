@@ -9,3 +9,4 @@ peewee==4.5.2
 prettytable==3.18.0
 PyMySQL==1.2.3
 python-decouple==3.8
+bcrypt==5.0.0

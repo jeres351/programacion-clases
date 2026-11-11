@@ -88,3 +88,20 @@ def productos_por_categoria(id_categoria):
             .join(CategoriaProducto)
             .where((CategoriaProducto.id_categoria == id_categoria) &
                    (Producto.activo == True)))
+def buscar_producto_cualquiera(gtin):
+    return Producto.get_or_none(Producto.gtin == gtin)
+
+def buscar_producto_cualquiera(gtin):
+    """Activo o eliminado (para consultar historial)."""
+    return Producto.get_or_none(Producto.gtin == gtin)
+
+def actualizar_producto(gtin, precio_compra, fecha_vencimiento):
+    try:
+        return (Producto
+                .update(precio_compra=precio_compra, fecha_vencimiento=fecha_vencimiento)
+                .where(Producto.gtin == gtin)
+                .execute())
+    except OperationalError as e:
+        print(f"Se ha perdido la conexión con el servidor DB: {e}")
+    except PeeweeException as e:
+        print(f"Ha ocurrido un error genérico: {e}")

@@ -1,4 +1,4 @@
-from negocio.negocio_producto import lista_producto, existe_producto, obtener_producto
+from negocio.negocio_producto import lista_producto, existe_producto, obtener_producto, existe_producto_historial
 from negocio.negocio_operacion import (mostrar_almacenes, existe_almacen, obtener_stock,registrar_entrada, registrar_salida_producto, mostrar_historial)
 from negocio.negocio_proveedor import mostrar_proveedores, existe_proveedor
 from auxiliares.entradas import pedir_texto, pedir_gtin, pedir_entero
@@ -60,7 +60,7 @@ def solicitar_datos_salida():
 def solicitar_historial():
     print("\n--- Historial de movimientos ---")
     gtin = pedir_texto("GTIN para filtrar (Enter = todos): ", 14, False)
-    if gtin and obtener_producto(gtin) is None:
+    if gtin and not existe_producto_historial(gtin):
         print(sonar)
         return
     mostrar_historial(gtin)

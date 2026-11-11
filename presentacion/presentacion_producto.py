@@ -1,5 +1,6 @@
 from negocio.negocio_producto import (crear_objeto_producto, borrar_producto, obtener_producto,
-                                      lista_producto, existe_producto_eliminado, reactivar_producto)
+                                      lista_producto, existe_producto_eliminado, reactivar_producto,
+                                      modificar_producto)
 from negocio.negocio_categoria_producto import mostrar_categorias, existe_categoria
 from negocio.negocio_proveedor import mostrar_proveedores, existe_proveedor
 from auxiliares.entradas import (pedir_texto, pedir_gtin, pedir_decimal, pedir_fecha,pedir_si_no, pedir_entero_opcional)
@@ -14,6 +15,13 @@ def solicitar_datos_producto():
     if existe_producto_eliminado(gtin):
         if pedir_si_no("Hay un producto eliminado con ese GTIN. ¿Quieres reactivarlo?"):
             reactivar_producto(gtin)
+            if pedir_si_no("¿Quieres actualizar el precio y el vencimiento?"):
+                precio = pedir_decimal("Nuevo precio de compra: ")
+                producto = obtener_producto(gtin)
+                vencimiento = None
+                if producto.perecible == "SI":
+                    vencimiento = pedir_fecha("Nueva fecha de vencimiento (YYYY-MM-DD): ")
+                modificar_producto(gtin, precio, vencimiento)
         else:
             print("Operación cancelada.")
         return
@@ -40,7 +48,7 @@ def solicitar_datos_producto():
             print("No existe ese proveedor, se omite.")
             rut_proveedor = None
 
-    crear_objeto_producto(gtin, nombre_producto, descripcion_producto, precio_compra, perecible,fecha_vencimiento, id_categoria, rut_proveedor)
+    crear_objeto_producto(gtin, nombre_producto, descripcion_producto, precio_compra, perecible, fecha_vencimiento, id_categoria, rut_proveedor)
 
 def solicitar_gtin_eliminar():
     print("\n--- Eliminar producto ---")

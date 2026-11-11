@@ -1,11 +1,14 @@
 from datos.modelos.models import BaseModel, Producto, Proveedor, Almacen, Direccion, Ingresos, Salida, ProductoAlmacen
+from datos.modelos.excepciones import StockInsuficiente
 from peewee import IntegrityError, OperationalError, PeeweeException
 db = BaseModel._meta.database
 
 
+def _producto_activo(gtin):
+    return Producto.select().where((Producto.gtin == gtin) & (Producto.activo == True)).exists()
 
-class StockInsuficiente(Exception):
-    pass
+def _proveedor_activo(rut):
+    return Proveedor.select().where((Proveedor.rut == rut) & (Proveedor.activo == True)).exists()
 
 
 def listado_almacenes():
@@ -28,6 +31,9 @@ def stock_disponible(gtin, id_almacen):
 
 def registrar_ingreso(gtin, id_almacen, rut_proveedor, cantidad, observacion):
     """Guarda el ingreso y suma el stock en una sola transacción."""
+    if not _producto_activo(gtin) or not _proveedor_activo(rut_proveedor):
+        print("El producto o el proveedor no están activos.")
+        return False
     try:
         with db.atomic():
             Ingresos.create(gtin_producto=gtin,
@@ -54,6 +60,9 @@ def registrar_ingreso(gtin, id_almacen, rut_proveedor, cantidad, observacion):
 
 def registrar_salida(gtin, id_almacen, cantidad, motivo):
     """Guarda la salida y descuenta el stock en una sola transacción."""
+    if not _producto_activo(gtin):
+        print("El producto no está activo.")
+        return False
     try:
         with db.atomic():
             filas = (ProductoAlmacen

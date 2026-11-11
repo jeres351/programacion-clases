@@ -1,6 +1,8 @@
 import re
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
+from getpass import getpass
+from auxiliares.validacion import validar_correo, validar_contrasena
 
 
 def pedir_texto(mensaje, max_largo=None, obligatorio=True):
@@ -98,3 +100,24 @@ def pedir_si_no(mensaje):
         if respuesta in ("n", "no"):
             return False
         print("Responda con 's' o 'n'.")
+
+def pedir_correo(mensaje="Correo: "):
+    while True:
+        correo, mensaje_validacion = validar_correo(input(mensaje))
+        if correo:
+            return correo
+        print(mensaje_validacion)
+
+
+def pedir_contrasena(mensaje="Contraseña: ", confirmar=True):
+    """Pide la contraseña sin mostrarla en pantalla (y la repite para confirmar)."""
+    while True:
+        contrasena = getpass(mensaje)
+        es_valida, mensaje_validacion = validar_contrasena(contrasena)
+        if not es_valida:
+            print(mensaje_validacion)
+            continue
+        if confirmar and getpass("Repita la contraseña: ") != contrasena:
+            print("Las contraseñas no coinciden.")
+            continue
+        return contrasena

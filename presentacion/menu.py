@@ -1,12 +1,14 @@
 from unittest import case
 
 from peewee import PeeweeException
-from auxiliares.opciones_menu import (menu_superior, menu_inventario, menu_operaciones,menu_productos, menu_proveedores)
+from auxiliares.opciones_menu import (menu_superior, menu_inventario, menu_operaciones,menu_productos, menu_proveedores, menu_usuarios)
 from presentacion.presentacion_inventario import ver_inventario, solicitar_stock_bajo
 from presentacion.presentacion_categoria_producto import ver_categorias
 from presentacion.presentacion_operacion import (solicitar_datos_entrada, solicitar_datos_salida,solicitar_historial)
 from presentacion.presentacion_producto import solicitar_datos_producto, solicitar_gtin_eliminar
 from presentacion.presentacion_proveedor import (ver_proveedores, solicitar_datos_proveedor,solicitar_rut_eliminar)
+from presentacion.presentacion_usuario import (ver_usuarios, ver_usuarios_deshabilitados,
+                                               solicitar_datos_usuario, solicitar_correo_deshabilitar)
 
 
 def _pedir_opcion(titulo, opciones):
@@ -65,7 +67,13 @@ def menu_proveedores_opciones():
         '2': solicitar_datos_proveedor,
         '3': solicitar_rut_eliminar
     })
-
+def menu_usuarios_opciones():
+    _submenu('Usuarios', menu_usuarios, {
+        '1': ver_usuarios,
+        '2': ver_usuarios_deshabilitados,
+        '3': solicitar_datos_usuario,
+        '4': solicitar_correo_deshabilitar,
+    })
 
 def menu_principal():
     print('Inventario PYME')
@@ -82,6 +90,8 @@ def menu_principal():
                 menu_productos_opciones()
             case '4':
                 menu_proveedores_opciones()
+            case '5':
+                menu_usuarios_opciones()
             case '0':
                 print('Saliendo...')
                 return
