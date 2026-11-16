@@ -183,11 +183,14 @@ CREATE TABLE producto_almacen (
 ) COMMENT = 'Esta tabla es para poder saber cuantos productos esta en cada almacen';
 
 CREATE TABLE usuarios (
-    id_usuario         INT AUTO_INCREMENT,
-    correo_usuario     VARCHAR(255),
-    contrasena_usuario VARCHAR(255) NOT NULL,
-    habilitado         BOOLEAN DEFAULT TRUE,
+    id_usuario          INT AUTO_INCREMENT,
+    nombre_usuario      VARCHAR(255) NOT NULL,
+    apellido_usuario    VARCHAR(255) NOT NULL,
+    correo_usuario      VARCHAR(255),
+    fecha_incorporacion  DATETIME DEFAULT CURRENT_TIMESTAMP,
+    contrasena_usuario  VARCHAR(255) NOT NULL,
+    habilitado          BOOLEAN DEFAULT TRUE,
 
     CONSTRAINT pk_usuarios
     PRIMARY KEY (id_usuario)
-) COMMENT = 'Esta tabla es para poder registrar los usuarios que puedan acceder al sistema, Habilitado es para poder hacer un borrado logico'
+) COMMENT = 'Esta tabla es para poder registrar los usuarios que puedan acceder al sistema, Habilitado es para poder hacer un borrado logico';
