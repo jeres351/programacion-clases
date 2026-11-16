@@ -183,7 +183,7 @@ CREATE TABLE producto_almacen (
 ) COMMENT = 'Esta tabla es para poder saber cuantos productos esta en cada almacen';
 
 CREATE TABLE usuarios (
-    id_usuario          INT AUTO_INCREMENT,
+    rut_usuario          INT AUTO_INCREMENT,
     nombre_usuario      VARCHAR(255) NOT NULL,
     apellido_usuario    VARCHAR(255) NOT NULL,
     correo_usuario      VARCHAR(255),
