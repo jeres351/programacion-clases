@@ -2,6 +2,7 @@ from negocio.negocio_usuarios import (mostrar_usuarios, crear_objeto_usuario, ob
                                       existe_usuario, existe_usuario_deshabilitado,
                                       reactivar_usuario, borrar_usuario)
 from auxiliares.entradas import pedir_texto, pedir_correo, pedir_contrasena, pedir_si_no
+from auxiliares.validaciones import validar_rut,validar_correo,validar_genero
 
 
 def ver_usuarios():
@@ -14,10 +15,49 @@ def ver_usuarios_deshabilitados():
 
 def solicitar_datos_usuario():
     print("\n--- Agregar usuario ---")
-    correo = pedir_correo("Correo: ")
-    if existe_usuario(correo):
-        print("Ya existe un usuario con ese correo.")
-        return
+    try:
+        rut = nombre = apellido = correo = pais = fecha_nacimiento = genero = contrasena = ''
+        
+        print('Ingrese Datos de Usuario')
+        print('========================')
+        
+        while rut == '':
+            rut = input('\nRUT (12.345.678-9): ')
+            rut, mensaje = validar_rut(rut)
+            print(mensaje)
+            
+        while nombre == '':
+            nombre = input('\nNombre: ')
+            
+        while apellido == '':
+            apellido = input('\nApellido: ')
+            
+        while correo == '':
+            correo = input('\nCorreo: ')
+            correo, mensaje = validar_correo(correo)
+            print(mensaje)
+        
+        while pais == '':
+            pais = input('\nNacionalidad: ')
+            
+        while fecha_nacimiento == '':
+            fecha_nacimiento = input('\nFecha Nacimiento:  ')
+            
+        while genero == '':
+            print('Seleccione Género')
+            print('[1] Masculino')
+            print('[2] Femenino')
+            print('[3] Otro')
+            genero = input('\nGénero: ')
+            genero, mensaje = validar_genero(genero)
+            print(mensaje)
+            
+        while contrasena == '':
+            contrasena = input('\nContraseña: ')
+            
+        return(rut, nombre, apellido, correo, pais, fecha_nacimiento, genero, contrasena)
+    except Exception as error:
+        print(f'{mensaje_error}{error}')
 
     if existe_usuario_deshabilitado(correo):
         if pedir_si_no("Hay un usuario deshabilitado con ese correo. ¿Quieres habilitarlo de nuevo?"):
@@ -26,10 +66,6 @@ def solicitar_datos_usuario():
             print("Operación cancelada.")
         return
 
-    nombre = pedir_texto("Nombre: ", 25)
-    apellido = pedir_texto("Apellido: ", 25)
-    contrasena = pedir_contrasena("Contraseña (mínimo 8 caracteres): ")
-    crear_objeto_usuario(nombre, apellido, correo, contrasena)
 
 def solicitar_correo_deshabilitar():
     print("\n--- Deshabilitar usuario ---")
