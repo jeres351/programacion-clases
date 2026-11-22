@@ -17,6 +17,17 @@ def buscar_usuario(correo):
     return Usuarios.get_or_none((Usuarios.correo_usuario == correo) &
                                 (Usuarios.habilitado == True))
 
+def buscar_usuario_login(correo):
+    """Devuelve el primer usuario habilitado con ese correo, o None si no hay ninguno."""
+    return (Usuarios
+            .select()
+            .where((Usuarios.correo_usuario == correo) &
+                   (Usuarios.habilitado == True))
+            .first())
+
+def contar_usuarios_habilitados():
+    return Usuarios.select().where(Usuarios.habilitado == True).count()
+
 def buscar_usuario_deshabilitado(correo):
     return Usuarios.get_or_none((Usuarios.correo_usuario == correo) &
                                 (Usuarios.habilitado == False))

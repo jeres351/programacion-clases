@@ -1,3 +1,9 @@
+menu_acceso = {
+    '1':'Iniciar sesión',
+    '2':'Registrarse',
+    '0':'Salir'
+}
+
 menu_superior = {
     '1':'Inventario',
     '2':'Operaciones',
@@ -24,6 +30,7 @@ menu_operaciones = {
 menu_productos = {
     '1':'Agregar',
     '2':'Eliminar',
+    '3':'Asignar proveedor',
     '0':'Volver'
 }
 

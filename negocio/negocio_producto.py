@@ -8,6 +8,7 @@ from datos.repositorio.repo_producto import (listado_producto,
                                               restaurar_producto,
                                               actualizar_producto)
 from datos.repositorio.repo_proveedor import asignar_proveedor
+from datos.repositorio.categoria_producto import asignar_categoria
 from datos.modelos.models import Producto
 from prettytable import PrettyTable
 
@@ -25,7 +26,7 @@ def lista_producto():
 
     if not productos:
         print("No hay productos registrados.")
-        return
+        return False
 
     tabla = PrettyTable()
     tabla.field_names = ["GTIN", "Producto", "Descripción", "Precio compra",
@@ -36,6 +37,7 @@ def lista_producto():
         tabla.add_row(fila)
 
     print(tabla)
+    return True
 
 def existe_producto(gtin):
     return buscar_producto(gtin) is not None
@@ -66,12 +68,6 @@ def crear_objeto_producto(gtin, nombre_producto, descripcion_producto, precio_co
 
 def borrar_producto(gtin):
     return eliminar_producto(gtin)
-
-def existe_producto_historial(gtin):
-    return buscar_producto_cualquiera(gtin) is not None
-
-def modificar_producto(gtin, precio_compra, fecha_vencimiento):
-    return actualizar_producto(gtin, precio_compra, fecha_vencimiento)
 
 def existe_producto_historial(gtin):
     return buscar_producto_cualquiera(gtin) is not None

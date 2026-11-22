@@ -19,33 +19,33 @@ def validar_contrasena(contrasena):
 
 def validar_rut(rut):
     patron_rut = r'^\d{1,3}(?:\.\d{3})*-?[0-9kK]$'
-    
+
     if re.match(patron_rut, rut):
         rut_limpio = rut.replace('.', '').replace('-', '')
         digito_verificador = rut_limpio[-1]
         numero_rut = rut_limpio[:-1]
         rut_invertido = numero_rut[::-1]
-        
+
         multiplicador = 2
         suma = []
-        
+
         for num in rut_invertido:
             multiplicacion = int(num) * multiplicador
             suma.append(multiplicacion)
             multiplicador += 1
             if multiplicador > 7:
                 multiplicador = 2
-        
+
         resto = sum(suma) % 11
         dig_ver_calc = 11 - resto
-        
+
         if dig_ver_calc == 11:
             dig_ver_calc = '0'
         elif dig_ver_calc == 10:
             dig_ver_calc = 'K'
         else:
             dig_ver_calc = str(dig_ver_calc)
-        
+
         if digito_verificador == dig_ver_calc:
             mensaje = 'RUT válido'
             return rut, mensaje
@@ -57,17 +57,8 @@ def validar_rut(rut):
         rut = ''
     return rut, mensaje
 
-def validar_correo(correo):
-    patron_correo = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    if re.match(patron_correo, correo):
-        mensaje = 'Formato de correo válido.'
-    else:
-        mensaje = 'Formato de correo NO corresponde, ingrese nuevamente...'
-        correo = ''
-    return correo, mensaje
-
 def validar_genero(genero):
-    if genero not in ['1','2','3']:
+    if genero not in ['1', '2', '3']:
         mensaje = 'Género Inválido'
         genero = ''
     else:

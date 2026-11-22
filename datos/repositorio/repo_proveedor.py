@@ -49,6 +49,14 @@ def asignar_proveedor(gtin, rut):
         print(f"Ha ocurrido un error genérico: {e}")
     return False
 
+def producto_tiene_proveedor(gtin, rut):
+    """True si ese proveedor ya está asignado a ese producto."""
+    return (ProveedorProducto
+            .select()
+            .where((ProveedorProducto.gtin_producto == gtin) &
+                   (ProveedorProducto.rut_proveedor == rut))
+            .exists())
+
 def eliminar_proveedor(rut):
     try:
         filas = (Proveedor

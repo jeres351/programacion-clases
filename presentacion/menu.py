@@ -1,14 +1,14 @@
-from unittest import case
-
 from peewee import PeeweeException
-from auxiliares.opciones_menu import (menu_superior, menu_inventario, menu_operaciones,menu_productos, menu_proveedores, menu_usuarios)
+from auxiliares.opciones_menu import (menu_acceso, menu_superior, menu_inventario, menu_operaciones, menu_productos, menu_proveedores, menu_usuarios)
 from presentacion.presentacion_inventario import ver_inventario, solicitar_stock_bajo
 from presentacion.presentacion_categoria_producto import ver_categorias
-from presentacion.presentacion_operacion import (solicitar_datos_entrada, solicitar_datos_salida,solicitar_historial)
-from presentacion.presentacion_producto import solicitar_datos_producto, solicitar_gtin_eliminar
-from presentacion.presentacion_proveedor import (ver_proveedores, solicitar_datos_proveedor,solicitar_rut_eliminar)
+from presentacion.presentacion_operacion import (solicitar_datos_entrada, solicitar_datos_salida, solicitar_historial)
+from presentacion.presentacion_producto import (solicitar_datos_producto, solicitar_gtin_eliminar,
+                                                solicitar_asignar_proveedor)
+from presentacion.presentacion_proveedor import (ver_proveedores, solicitar_datos_proveedor, solicitar_rut_eliminar)
 from presentacion.presentacion_usuario import (ver_usuarios, ver_usuarios_deshabilitados,
-                                               solicitar_datos_usuario, solicitar_correo_deshabilitar)
+                                               solicitar_datos_usuario, solicitar_correo_deshabilitar,
+                                               solicitar_login, solicitar_registro)
 
 
 def _pedir_opcion(titulo, opciones):
@@ -58,6 +58,7 @@ def menu_productos_opciones():
     _submenu('Productos', menu_productos, {
         '1': solicitar_datos_producto,
         '2': solicitar_gtin_eliminar,
+        '3': solicitar_asignar_proveedor,
     })
 
 
@@ -65,8 +66,10 @@ def menu_proveedores_opciones():
     _submenu('Proveedores', menu_proveedores, {
         '1': ver_proveedores,
         '2': solicitar_datos_proveedor,
-        '3': solicitar_rut_eliminar
+        '3': solicitar_rut_eliminar,
     })
+
+
 def menu_usuarios_opciones():
     _submenu('Usuarios', menu_usuarios, {
         '1': ver_usuarios,
@@ -75,9 +78,30 @@ def menu_usuarios_opciones():
         '4': solicitar_correo_deshabilitar,
     })
 
+
+def pantalla_acceso():
+    """Devuelve True si el usuario inicia sesión, o False si decide salir."""
+    while True:
+        opcion = _pedir_opcion('Acceso', menu_acceso)
+        match opcion:
+            case '1':
+                if solicitar_login() is not None:
+                    return True
+            case '2':
+                _ejecutar(solicitar_registro)
+            case '0':
+                return False
+            case _:
+                print('Opción seleccionada NO corresponde...\nIntente nuevamente...')
+
+
 def menu_principal():
     print('Inventario PYME')
     print('===============')
+
+    if not pantalla_acceso():
+        print('Saliendo...')
+        return
 
     while True:
         opcion_usuario = _pedir_opcion('Menú principal', menu_superior)
@@ -97,4 +121,3 @@ def menu_principal():
                 return
             case _:
                 print('Opción seleccionada NO corresponde...\nIntente nuevamente...')
-           

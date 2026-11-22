@@ -1,15 +1,16 @@
 from negocio.negocio_producto import lista_producto, existe_producto, obtener_producto, existe_producto_historial
-from negocio.negocio_operacion import (mostrar_almacenes, existe_almacen, obtener_stock,registrar_entrada, registrar_salida_producto, mostrar_historial)
+from negocio.negocio_operacion import (mostrar_almacenes, existe_almacen, obtener_stock, registrar_entrada, registrar_salida_producto, mostrar_historial)
 from negocio.negocio_proveedor import mostrar_proveedores, existe_proveedor
 from auxiliares.entradas import pedir_texto, pedir_gtin, pedir_entero
-sonar = "No existe un producto con ese GTIN."
+
+MSG_PRODUCTO_NO_EXISTE = "No existe un producto con ese GTIN."
 
 def solicitar_datos_entrada():
     print("\n--- Registrar entrada ---")
     lista_producto()
     gtin = pedir_gtin("GTIN del producto: ")
     if not existe_producto(gtin):
-        print(sonar)
+        print(MSG_PRODUCTO_NO_EXISTE)
         return
 
     if not mostrar_almacenes():
@@ -36,7 +37,7 @@ def solicitar_datos_salida():
     lista_producto()
     gtin = pedir_gtin("GTIN del producto: ")
     if not existe_producto(gtin):
-        print("No existe un producto con ese GTIN.")
+        print(MSG_PRODUCTO_NO_EXISTE)
         return
 
     if not mostrar_almacenes():
@@ -60,7 +61,9 @@ def solicitar_datos_salida():
 def solicitar_historial():
     print("\n--- Historial de movimientos ---")
     gtin = pedir_texto("GTIN para filtrar (Enter = todos): ", 14, False)
-    if gtin and not existe_producto_historial(gtin):
-        print(sonar)
-        return
+    if gtin:
+        gtin = gtin.upper()
+        if not existe_producto_historial(gtin):
+            print(MSG_PRODUCTO_NO_EXISTE)
+            return
     mostrar_historial(gtin)

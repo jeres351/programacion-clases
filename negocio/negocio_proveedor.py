@@ -1,6 +1,7 @@
 from datos.repositorio.repo_proveedor import (listado_proveedores, buscar_proveedor,
                                               buscar_proveedor_eliminado, guardar_proveedor,
-                                              eliminar_proveedor, restaurar_proveedor)
+                                              eliminar_proveedor, restaurar_proveedor,
+                                              asignar_proveedor, producto_tiene_proveedor)
 from datos.modelos.models import Proveedor, Direccion
 from prettytable import PrettyTable
 
@@ -52,3 +53,22 @@ def crear_objeto_proveedor(rut, nombre_proveedor, correo_proveedor, telefono_pro
 
 def borrar_proveedor(rut):
     return eliminar_proveedor(rut)
+
+def _normalizar_rut(rut):
+    return rut.replace(".", "").replace("-", "").replace(" ", "").upper()
+
+def buscar_rut_proveedor(texto):
+    """Devuelve el RUT tal como está guardado, aunque se escriba sin puntos, sin guion
+    o en minúscula (ej: 761234567 o 76.123.456-7). Si no hay proveedor activo, devuelve None."""
+    buscado = _normalizar_rut(texto)
+    for proveedor in listado_proveedores():
+        if _normalizar_rut(proveedor.rut) == buscado:
+            return proveedor.rut
+    return None
+
+def vincular_proveedor_producto(gtin, rut):
+    """Asigna un proveedor a un producto existente. Un producto puede tener varios."""
+    if producto_tiene_proveedor(gtin, rut):
+        print("Ese proveedor ya está asignado a este producto.")
+        return False
+    return asignar_proveedor(gtin, rut)

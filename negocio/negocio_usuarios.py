@@ -4,10 +4,12 @@ from datos.repositorio.repo_usuarios import (listado_usuarios_habilitados,
                                              listado_usuarios_deshabilitados,
                                              buscar_usuario,
                                              buscar_usuario_deshabilitado,
+                                             buscar_usuario_login,
+                                             contar_usuarios_habilitados,
                                              guardar_usuario,
                                              deshabilitar_usuario,
                                              habilitar_usuario)
-from auxiliares.seguridad import hashear_contrasena
+from auxiliares.seguridad import hashear_contrasena, verificar_contrasena
 
 
 def mostrar_usuarios(habilitados=True):
@@ -55,3 +57,15 @@ def borrar_usuario(correo):
 
 def reactivar_usuario(correo):
     return habilitar_usuario(correo)
+
+def hay_usuarios_habilitados():
+    return contar_usuarios_habilitados() > 0
+
+def iniciar_sesion(correo, contrasena):
+    """Devuelve el usuario si el correo y la contraseña son correctos; si no, None."""
+    usuario = buscar_usuario_login(correo)
+    if usuario is None:
+        return None
+    if not verificar_contrasena(contrasena, usuario.contrasena_usuario):
+        return None
+    return usuario

@@ -1,8 +1,8 @@
 from negocio.negocio_producto import (crear_objeto_producto, borrar_producto, obtener_producto,
-                                      lista_producto, existe_producto_eliminado, reactivar_producto,
-                                      modificar_producto)
+                                      existe_producto, lista_producto, existe_producto_eliminado,
+                                      reactivar_producto, modificar_producto)
 from negocio.negocio_categoria_producto import mostrar_categorias, existe_categoria
-from negocio.negocio_proveedor import mostrar_proveedores, existe_proveedor
+from negocio.negocio_proveedor import mostrar_proveedores, buscar_rut_proveedor, vincular_proveedor_producto
 from auxiliares.entradas import (pedir_texto, pedir_gtin, pedir_decimal, pedir_fecha,pedir_si_no, pedir_entero_opcional)
 
 def solicitar_datos_producto():
@@ -43,10 +43,11 @@ def solicitar_datos_producto():
 
     rut_proveedor = None
     if mostrar_proveedores():
-        rut_proveedor = pedir_texto("RUT del proveedor (Enter para omitir): ", 15, False)
-        if rut_proveedor and not existe_proveedor(rut_proveedor):
-            print("No existe ese proveedor, se omite.")
-            rut_proveedor = None
+        texto_rut = pedir_texto("RUT del proveedor (Enter para omitir): ", 15, False)
+        if texto_rut:
+            rut_proveedor = buscar_rut_proveedor(texto_rut)
+            if rut_proveedor is None:
+                print("No existe ese proveedor, se omite. Puedes asignarlo después en Productos > Asignar proveedor.")
 
     crear_objeto_producto(gtin, nombre_producto, descripcion_producto, precio_compra, perecible, fecha_vencimiento, id_categoria, rut_proveedor)
 
@@ -63,3 +64,22 @@ def solicitar_gtin_eliminar():
         borrar_producto(gtin)
     else:
         print("Operación cancelada.")
+
+def solicitar_asignar_proveedor():
+    print("\n--- Asignar proveedor a un producto ---")
+    if not lista_producto():
+        return
+    gtin = pedir_gtin("GTIN del producto: ")
+    if not existe_producto(gtin):
+        print("No existe un producto con ese GTIN.")
+        return
+
+    if not mostrar_proveedores():
+        print("Primero registra un proveedor en el menú Proveedores.")
+        return
+    rut = buscar_rut_proveedor(pedir_texto("RUT del proveedor: ", 15))
+    if rut is None:
+        print("No existe un proveedor con ese RUT.")
+        return
+
+    vincular_proveedor_producto(gtin, rut)

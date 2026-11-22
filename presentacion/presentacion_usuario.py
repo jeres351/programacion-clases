@@ -1,8 +1,8 @@
-from negocio.negocio_usuarios import (mostrar_usuarios, crear_objeto_usuario, obtener_usuario,
+from getpass import getpass
+from negocio.negocio_usuarios import (mostrar_usuarios, iniciar_sesion, crear_objeto_usuario, obtener_usuario,
                                       existe_usuario, existe_usuario_deshabilitado,
                                       reactivar_usuario, borrar_usuario)
 from auxiliares.entradas import pedir_texto, pedir_correo, pedir_contrasena, pedir_si_no
-from auxiliares.validacion import validar_rut,validar_correo,validar_genero
 
 
 def ver_usuarios():
@@ -15,60 +15,40 @@ def ver_usuarios_deshabilitados():
 
 def solicitar_datos_usuario():
     print("\n--- Agregar usuario ---")
-    try:
-        rut = nombre = apellido = correo = pais = fecha_nacimiento = genero = contrasena = ''
+    nombre = pedir_texto("Nombre: ", 25)
+    apellido = pedir_texto("Apellido: ", 25)
+    correo = pedir_correo("Correo: ")
 
-        print('Ingrese Datos de Usuario')
-        print('========================')
+    if existe_usuario(correo):
+        print("Ya existe un usuario con ese correo.")
+        return
 
-        while rut == '':
-            rut = input('\nRUT (12.345.678-9): ').strip()
-            rut, mensaje = validar_rut(rut)
-            print(mensaje)
+    # Si el correo ya pertenece a un usuario deshabilitado,
+    # se ofrece reactivarlo en vez de crear uno nuevo.
+    if existe_usuario_deshabilitado(correo):
+        if pedir_si_no("Hay un usuario deshabilitado con ese correo. ¿Quieres habilitarlo de nuevo?"):
+            reactivar_usuario(correo)
+        else:
+            print("Operación cancelada.")
+        return
 
-        while nombre == '':
-            nombre = input('\nNombre: ').strip()
+    contrasena = pedir_contrasena()   # sin eco en pantalla, con confirmación y validación
+    crear_objeto_usuario(nombre, apellido, correo, contrasena)
 
-        while apellido == '':
-            apellido = input('\nApellido: ').strip()
 
-        while correo == '':
-            correo = input('\nCorreo: ').strip()
-            correo, mensaje = validar_correo(correo)
-            print(mensaje)
+def solicitar_registro():
+    """Registro público (antes de iniciar sesión). No reactiva cuentas deshabilitadas."""
+    print("\n--- Registrarse ---")
+    nombre = pedir_texto("Nombre: ", 25)
+    apellido = pedir_texto("Apellido: ", 25)
+    correo = pedir_correo("Correo: ")
 
-        # Si el correo ya pertenece a un usuario deshabilitado,
-        # se ofrece reactivarlo en vez de crear uno nuevo.
-        if existe_usuario_deshabilitado(correo):
-            if pedir_si_no("Hay un usuario deshabilitado con ese correo. ¿Quieres habilitarlo de nuevo?"):
-                reactivar_usuario(correo)
-            else:
-                print("Operación cancelada.")
-            return None
+    if existe_usuario(correo) or existe_usuario_deshabilitado(correo):
+        print("No se puede registrar con ese correo.")
+        return
 
-        while pais == '':
-            pais = input('\nNacionalidad: ').strip()
-
-        while fecha_nacimiento == '':
-            fecha_nacimiento = input('\nFecha Nacimiento: ').strip()
-
-        while genero == '':
-            print('Seleccione Género')
-            print('[1] Masculino')
-            print('[2] Femenino')
-            print('[3] Otro')
-            genero = input('\nGénero: ').strip()
-            genero, mensaje = validar_genero(genero)
-            print(mensaje)
-
-        while contrasena == '':
-            contrasena = input('\nContraseña: ').strip()
-
-        return rut, nombre, apellido, correo, pais, fecha_nacimiento, genero, contrasena
-
-    except Exception as error:
-        print(f'Error al solicitar los datos del usuario: {error}')
-        return None
+    contrasena = pedir_contrasena()
+    crear_objeto_usuario(nombre, apellido, correo, contrasena)
 
 
 def solicitar_correo_deshabilitar():
@@ -85,3 +65,18 @@ def solicitar_correo_deshabilitar():
         borrar_usuario(correo)
     else:
         print("Operación cancelada.")
+
+
+def solicitar_login(max_intentos=3):
+    """Pide correo y contraseña. Devuelve el usuario si entra, o None tras agotar los intentos."""
+    print("\n--- Iniciar sesión ---")
+    for intento in range(1, max_intentos + 1):
+        correo = pedir_texto("Correo: ", 255)
+        contrasena = getpass("Contraseña: ")
+        usuario = iniciar_sesion(correo, contrasena)
+        if usuario is not None:
+            print(f"Bienvenido/a, {usuario.nombre_usuario} {usuario.apellido_usuario}.")
+            return usuario
+        print(f"Correo o contraseña incorrectos. Intento {intento} de {max_intentos}.")
+    print("Demasiados intentos fallidos.")
+    return None
