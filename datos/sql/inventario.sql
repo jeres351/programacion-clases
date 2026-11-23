@@ -184,12 +184,12 @@ CREATE TABLE producto_almacen (
 
 CREATE TABLE usuarios (
     id_usuario           INT AUTO_INCREMENT,
-    nombre_usuario      VARCHAR(255) NOT NULL,
-    apellido_usuario    VARCHAR(255) NOT NULL,
-    correo_usuario      VARCHAR(255) NOT NULL UNIQUE,
+    nombre_usuario       VARCHAR(255) NOT NULL,
+    apellido_usuario     VARCHAR(255) NOT NULL,
+    correo_usuario       VARCHAR(100) NOT NULL UNIQUE,
     fecha_incorporacion  DATETIME DEFAULT CURRENT_TIMESTAMP,
-    contrasena_usuario  VARCHAR(255) NOT NULL,
-    habilitado          BOOLEAN NOT NULL DEFAULT TRUE,
+    contrasena_usuario   VARCHAR(255) NOT NULL,
+    habilitado           BOOLEAN NOT NULL DEFAULT TRUE,
 
     CONSTRAINT pk_usuarios
     PRIMARY KEY (id_usuario)

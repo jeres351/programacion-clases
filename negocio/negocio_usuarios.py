@@ -10,6 +10,8 @@ from datos.repositorio.repo_usuarios import (listado_usuarios_habilitados,
                                              deshabilitar_usuario,
                                              habilitar_usuario)
 from auxiliares.seguridad import hashear_contrasena, verificar_contrasena
+from auxiliares.validacion import ValidacionError
+import re
 
 
 def mostrar_usuarios(habilitados=True):
@@ -40,7 +42,20 @@ def obtener_usuario(correo):
 def existe_usuario_deshabilitado(correo):
     return buscar_usuario_deshabilitado(correo) is not None
 
+
+def _validar_nombre(valor, campo):
+    if not valor or not valor.strip():
+        raise ValidacionError(f"El {campo} no puede estar vacío.")
+    if re.search(r'\d', valor):
+        raise ValidacionError(f"El {campo} no puede contener números.")
+    if not re.fullmatch(r"[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+", valor):
+        raise ValidacionError(f"El {campo} solo puede contener letras y espacios.")
+
 def crear_objeto_usuario(nombre, apellido, correo, contrasena):
+
+    _validar_nombre(nombre, "nombre")
+    _validar_nombre(apellido, "apellido")
+
     nuevo_usuario = Usuarios()
     nuevo_usuario.nombre_usuario = nombre
     nuevo_usuario.apellido_usuario = apellido

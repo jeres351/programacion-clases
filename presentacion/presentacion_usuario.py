@@ -3,6 +3,7 @@ from negocio.negocio_usuarios import (mostrar_usuarios, iniciar_sesion, crear_ob
                                       existe_usuario, existe_usuario_deshabilitado,
                                       reactivar_usuario, borrar_usuario)
 from auxiliares.entradas import pedir_texto, pedir_correo, pedir_contrasena, pedir_si_no
+from auxiliares.validacion import ValidacionError
 
 
 def ver_usuarios():
@@ -18,6 +19,7 @@ def solicitar_datos_usuario():
     nombre = pedir_texto("Nombre: ", 25)
     apellido = pedir_texto("Apellido: ", 25)
     correo = pedir_correo("Correo: ")
+    
 
     if existe_usuario(correo):
         print("Ya existe un usuario con ese correo.")

@@ -64,3 +64,8 @@ def validar_genero(genero):
     else:
         mensaje = 'Género Válido'
     return genero, mensaje
+
+class ValidacionError(Exception):
+    """Error de validación de reglas de negocio."""
+    pass
+
