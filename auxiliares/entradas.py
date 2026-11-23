@@ -121,3 +121,17 @@ def pedir_contrasena(mensaje="Contraseña: ", confirmar=True):
             print("Las contraseñas no coinciden.")
             continue
         return contrasena
+
+def pedir_texto(mensaje, max_longitud, solo_letras=False):
+    while True:
+        valor = input(mensaje).strip()
+        if not valor:
+            print("Este campo no puede estar vacío.")
+            continue
+        if len(valor) > max_longitud:
+            print(f"Máximo {max_longitud} caracteres.")
+            continue
+        if solo_letras and not re.fullmatch(r"[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+", valor):
+            print("Solo se permiten letras y espacios (sin números ni símbolos).")
+            continue
+        return valor

@@ -38,11 +38,11 @@ def solicitar_datos_usuario():
     crear_objeto_usuario(nombre, apellido, correo, contrasena)
 
 
-def solicitar_registro():
+def solicitar_registro(): 
     """Registro público (antes de iniciar sesión). No reactiva cuentas deshabilitadas."""
     print("\n--- Registrarse ---")
-    nombre = pedir_texto("Nombre: ", 25)
-    apellido = pedir_texto("Apellido: ", 25)
+    nombre = pedir_texto("Nombre: ", 25, solo_letras=True)
+    apellido = pedir_texto("Apellido: ", 25, solo_letras=True)
     correo = pedir_correo("Correo: ")
 
     if existe_usuario(correo) or existe_usuario_deshabilitado(correo):
