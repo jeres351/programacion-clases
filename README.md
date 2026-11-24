@@ -3,7 +3,9 @@ Este es nuestro proyecto de POO (Programacion Orientada a Objetos). En el que hi
 integrantes_:
 Jorge_Ortiz_Castillo
 Elizabet__cañete
-jeremias_jesus_federico_alonzo_reyes_:muños
+jeremias_jesus_federico_alonzo_reyes_muños
+
+
 
 Descripcion general: 
 En este proyecto se realizo el paso a paso para poder tener una plantilla base para un inventario para una pyme. Teniendo tanto:
@@ -11,6 +13,7 @@ Datos de Almacen, Categoria de Productos, Direccion, Ingresos, Productos en alma
 esos proovedores, El registro de Salidas y entradas, Y por ultimo Registro de Usuarios.
 
 Dependencias:
+
 bcrypt==5.0.0
 cffi==2.1.1
 cryptography==50.0.2
@@ -21,16 +24,12 @@ PyMySQL==1.2.3
 python-decouple==3.8
 
 Procedimiento de Instalacion:
+
 en la terminal poner estos comandos
-
 py -m venv .venv
-
 .venv\Scripts\Activate.ps1
-
 python -m pip install -r requirements.txt
-
 Procedimiento de Base de Datos:
-
 Ir a la carpeta SQL en Datos. 
 Copiar y Pegar el contenido de Inventario.SQL
 
