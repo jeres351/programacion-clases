@@ -9,12 +9,21 @@ def validar_correo(correo):
         correo = ''
     return correo, mensaje
 
+
 def validar_contrasena(contrasena):
     """Devuelve (es_valida, mensaje). bcrypt solo admite hasta 72 bytes."""
     if len(contrasena) < 8:
         return False, "La contraseña debe tener al menos 8 caracteres."
     if len(contrasena.encode("utf-8")) > 72:
         return False, "La contraseña es demasiado larga (máximo 72 bytes)."
+    if not re.search(r"[A-Z]", contrasena):
+        return False, "La contraseña debe incluir al menos una letra mayúscula."
+    if not re.search(r"[a-z]", contrasena):
+        return False, "La contraseña debe incluir al menos una letra minúscula."
+    if not re.search(r"\d", contrasena):
+        return False, "La contraseña debe incluir al menos un número."
+    if not re.search(r"[!@#$%^&*(),.?\":{}|<>_\-+=/\\\[\]]", contrasena):
+        return False, "La contraseña debe incluir al menos un símbolo (!@#$%^&*...)."
     return True, "Contraseña válida"
 
 def validar_rut(rut):
